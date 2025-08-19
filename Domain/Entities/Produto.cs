@@ -7,8 +7,8 @@ namespace SimulacaoDeCredito.Domain.Entities
 
         public required decimal PcTaxaJuros { get; set; }
 
-        public required int NuMinimoMeses { get; set; }
-        public int? NuMaximoMeses { get; set; }
+        public required short NuMinimoMeses { get; set; }
+        public short? NuMaximoMeses { get; set; }
         public required decimal VrMinimo { get; set; }
         public decimal? VrMaximo { get; set; }
     }
