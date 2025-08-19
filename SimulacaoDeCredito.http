@@ -1,0 +1,6 @@
+@SimulacaoDeCredito_HostAddress = http://localhost:5214
+
+GET {{SimulacaoDeCredito_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
