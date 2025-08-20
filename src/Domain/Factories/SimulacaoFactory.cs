@@ -9,10 +9,10 @@ namespace SimulacaoDeCredito.Domain.Factories
         public static Simulacao Criar(int prazo, decimal valor, Produto produto)
         {
 
-            var strategies = new List<ICalculoTabelaStrategy>() { new PriceStrategy(), new SacStrategy() };
+            var strategies = new List<ICalculoTabelaStrategy>() { new SacStrategy(), new PriceStrategy(), };
             var simulacaoTabelas = strategies.Select(s => s.Calcular(valor, prazo, produto.PcTaxaJuros)).ToList();
 
-            var simulacao = new Simulacao()
+            Simulacao simulacao = new Simulacao()
             {
                 codigoProduto = produto.CoProduto,
                 descricaoProduto = produto.NoProduto,
@@ -20,7 +20,7 @@ namespace SimulacaoDeCredito.Domain.Factories
                 taxaJuros = produto.PcTaxaJuros,
                 resultadoSimulacao = simulacaoTabelas
             };
-            throw new NotImplementedException();
+            return simulacao;
         }
     }
 }

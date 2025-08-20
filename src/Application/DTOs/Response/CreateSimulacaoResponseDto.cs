@@ -19,7 +19,7 @@ namespace SimulacaoDeCredito.Application.DTOs.Response
     public class SimulacaoParcelaResponseDto
     {
         public required int numero { get; set; }
-        public required decimal valorAmorizacao { get; set; }
+        public required decimal valorAmortizacao { get; set; }
         public required decimal valorJuros { get; set; }
         public required decimal valorPrestacao { get; set; }
     }

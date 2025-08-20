@@ -1,5 +1,7 @@
+using AutoMapper;
 using MediatR;
 using SimulacaoDeCredito.Application.DTOs.Response;
+using SimulacaoDeCredito.Domain.EventPublishers;
 using SimulacaoDeCredito.Domain.Factories;
 using SimulacaoDeCredito.Domain.Repositories;
 
@@ -8,9 +10,13 @@ namespace SimulacaoDeCredito.Application.Commands;
 public class CreateSimulacaoHandler : IRequestHandler<CreateSimulacaoCommand, CreateSimulacaoResponseDto>
 {
     IProdutoRepository _produtoRepository;
-    public CreateSimulacaoHandler(IProdutoRepository produtoRepository)
+    IMapper _mapper;
+    IEventPublisher _eventPublisher;
+    public CreateSimulacaoHandler(IProdutoRepository produtoRepository, IMapper mapper, IEventPublisher eventPublisher)
     {
         _produtoRepository = produtoRepository;
+        _mapper = mapper;
+        _eventPublisher = eventPublisher;
     }
 
     public async Task<CreateSimulacaoResponseDto> Handle(CreateSimulacaoCommand request, CancellationToken cancellationToken)
@@ -31,13 +37,9 @@ public class CreateSimulacaoHandler : IRequestHandler<CreateSimulacaoCommand, Cr
         }
 
         var simulacao = SimulacaoFactory.Criar(prazo, valor, produto);
-        return new CreateSimulacaoResponseDto()
-        {
-            codigoProduto = 1,
-            descricaoProduto = "Produto 1",
-            idSimulacao = 1,
-            taxaJuros = 0.01m,
-            resultadoSimulacao = new List<SimulacaoTabelaResponseDto>()
-        };
+
+        await _eventPublisher.PublishAsync(simulacao);
+
+        return _mapper.Map<CreateSimulacaoResponseDto>(simulacao);
     }
 }

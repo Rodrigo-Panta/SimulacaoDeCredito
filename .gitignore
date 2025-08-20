@@ -17,3 +17,6 @@ packages/
 *.tmp
 *.pdb
 *.pid
+.vscode/
+
+eventhub-config.json
