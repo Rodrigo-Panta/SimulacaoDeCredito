@@ -10,11 +10,13 @@ namespace SimulacaoDeCredito.Application.Commands;
 public class CreateSimulacaoHandler : IRequestHandler<CreateSimulacaoCommand, CreateSimulacaoResponseDto>
 {
     IProdutoRepository _produtoRepository;
+    ISimulacaoRepository _simulacaoRepository;
     IMapper _mapper;
     IEventPublisher _eventPublisher;
-    public CreateSimulacaoHandler(IProdutoRepository produtoRepository, IMapper mapper, IEventPublisher eventPublisher)
+    public CreateSimulacaoHandler(IProdutoRepository produtoRepository, ISimulacaoRepository simulacaoRepository, IMapper mapper, IEventPublisher eventPublisher)
     {
         _produtoRepository = produtoRepository;
+        _simulacaoRepository = simulacaoRepository;
         _mapper = mapper;
         _eventPublisher = eventPublisher;
     }
@@ -37,6 +39,8 @@ public class CreateSimulacaoHandler : IRequestHandler<CreateSimulacaoCommand, Cr
         }
 
         var simulacao = SimulacaoFactory.Criar(prazo, valor, produto);
+        var simulacaoId = await _simulacaoRepository.CriarSimulacao(simulacao);
+        simulacao.IdSimulacao = simulacaoId;
 
         await _eventPublisher.PublishAsync(simulacao);
 

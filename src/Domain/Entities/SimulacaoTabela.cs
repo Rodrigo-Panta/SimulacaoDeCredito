@@ -1,6 +1,6 @@
 public class SimulacaoTabela
 {
-    public required string tipo { get; set; }
-    public required ICollection<SimulacaoParcela> parcelas { get; set; }
+    public required string Tipo { get; set; }
+    public required ICollection<SimulacaoParcela> Parcelas { get; set; }
 }
 

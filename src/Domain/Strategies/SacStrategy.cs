@@ -15,17 +15,17 @@ namespace SimulacaoDeCredito.Domain.Strategies
 
                 parcelas.Add(new SimulacaoParcela()
                 {
-                    numero = i,
-                    valorAmortizacao = amortizacao,
-                    valorJuros = juros,
-                    valorPrestacao = prestacao
+                    Numero = i,
+                    ValorAmortizacao = amortizacao,
+                    ValorJuros = juros,
+                    ValorPrestacao = prestacao
                 });
             }
 
             return new SimulacaoTabela()
             {
-                tipo = "SAC",
-                parcelas = parcelas
+                Tipo = "SAC",
+                Parcelas = parcelas
             };
         }
 

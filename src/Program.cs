@@ -4,11 +4,8 @@ using SimulacaoDeCredito.Domain.EventPublishers;
 using SimulacaoDeCredito.Domain.Repositories;
 using SimulacaoDeCredito.Infra.Repositories;
 using SimulacaoDeCredito.Infrastructure.BaseProduto.Persistence;
-using Azure.Messaging.EventHubs.Producer;
-using Azure.Messaging.EventHubs;
 using SimulacaoDeCredito.Infra.EventPublishers;
-using Azure.Messaging.EventHubs.Consumer;
-using System.Text;
+using SimulacaoDeCredito.src.Infra.BaseSimulacao.Persistence;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,10 +23,12 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Pr
 // EF Core
 builder.Services.AddDbContext<BaseProdutosDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BaseProdutoConnectionString")));
+builder.Services.AddDbContext<BaseSimulacaoDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BaseSimulacaoConnectionString")));
 
 // Repositórios
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
-
+builder.Services.AddScoped<ISimulacaoRepository, SimulacaoRepository>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));

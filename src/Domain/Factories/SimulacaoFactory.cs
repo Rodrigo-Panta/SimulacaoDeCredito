@@ -14,11 +14,12 @@ namespace SimulacaoDeCredito.Domain.Factories
 
             Simulacao simulacao = new Simulacao()
             {
-                codigoProduto = produto.CoProduto,
-                descricaoProduto = produto.NoProduto,
-                idSimulacao = 1,
-                taxaJuros = produto.PcTaxaJuros,
-                resultadoSimulacao = simulacaoTabelas
+                CodigoProduto = produto.CoProduto,
+                DescricaoProduto = produto.NoProduto,
+                IdSimulacao = null,
+                TaxaJuros = produto.PcTaxaJuros,
+                ResultadoSimulacao = simulacaoTabelas,
+                DataCriacao = DateTime.Now
             };
             return simulacao;
         }

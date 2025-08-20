@@ -18,10 +18,10 @@ namespace SimulacaoDeCredito.Domain.Strategies
 
                 parcelas.Add(new SimulacaoParcela()
                 {
-                    numero = i,
-                    valorAmortizacao = amortizacao,
-                    valorJuros = juros,
-                    valorPrestacao = prestacao
+                    Numero = i,
+                    ValorAmortizacao = amortizacao,
+                    ValorJuros = juros,
+                    ValorPrestacao = prestacao
                 });
             }
 
@@ -29,8 +29,8 @@ namespace SimulacaoDeCredito.Domain.Strategies
 
             return new SimulacaoTabela()
             {
-                tipo = "PRICE",
-                parcelas = parcelas
+                Tipo = "PRICE",
+                Parcelas = parcelas
             };
         }
 
