@@ -11,6 +11,8 @@ public partial class SimulacaoTabelaModel
 
     public string Tipo { get; set; } = null!;
 
+    public decimal ValorTotalParcelas { get; set; }
+
     public virtual SimulacaoModel IdSimulacaoNavigation { get; set; } = null!;
 
     public virtual ICollection<SimulacaoParcelaModel> SimulacaoParcelas { get; set; } = new List<SimulacaoParcelaModel>();

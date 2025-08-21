@@ -25,12 +25,11 @@ namespace SimulacaoDeCredito.Domain.Strategies
                 });
             }
 
-
-
             return new SimulacaoTabela()
             {
                 Tipo = "PRICE",
-                Parcelas = parcelas
+                Parcelas = parcelas,
+                ValorTotalParcelas = Math.Round(prestacao * prazo, 2, MidpointRounding.AwayFromZero)
             };
         }
 

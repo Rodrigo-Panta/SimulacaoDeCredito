@@ -4,6 +4,7 @@ namespace SimulacaoDeCredito.Domain.Strategies
     {
         public SimulacaoTabela Calcular(decimal valor, int prazo, decimal taxa)
         {
+            decimal valorTotalParcelas = 0;
             decimal saldoDevedor = valor;
             decimal amortizacao = Math.Round(valor / prazo, 2, MidpointRounding.AwayFromZero);
             var parcelas = new List<SimulacaoParcela>();
@@ -13,6 +14,7 @@ namespace SimulacaoDeCredito.Domain.Strategies
                 decimal prestacao = amortizacao + juros;
                 saldoDevedor -= amortizacao;
 
+                valorTotalParcelas += prestacao;
                 parcelas.Add(new SimulacaoParcela()
                 {
                     Numero = i,
@@ -25,7 +27,8 @@ namespace SimulacaoDeCredito.Domain.Strategies
             return new SimulacaoTabela()
             {
                 Tipo = "SAC",
-                Parcelas = parcelas
+                Parcelas = parcelas,
+                ValorTotalParcelas = Math.Round(valorTotalParcelas, 2, MidpointRounding.AwayFromZero)
             };
         }
 

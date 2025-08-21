@@ -13,6 +13,10 @@ public partial class SimulacaoModel
 
     public decimal TaxaJuros { get; set; }
 
+    public decimal ValorDesejado { get; set; }
+
+    public int Prazo { get; set; }
+
     public DateTime DataCriacao { get; set; }
 
     public virtual ICollection<SimulacaoTabelaModel> SimulacaoTabelas { get; set; } = new List<SimulacaoTabelaModel>();

@@ -1,11 +1,10 @@
 using AutoMapper;
 using MediatR;
-using SimulacaoDeCredito.Application.DTOs.Response;
 using SimulacaoDeCredito.Domain.EventPublishers;
 using SimulacaoDeCredito.Domain.Factories;
 using SimulacaoDeCredito.Domain.Repositories;
 
-namespace SimulacaoDeCredito.Application.Commands;
+namespace SimulacaoDeCredito.Application.Commands.CreateSimulacao;
 
 public class CreateSimulacaoHandler : IRequestHandler<CreateSimulacaoCommand, CreateSimulacaoResponseDto>
 {

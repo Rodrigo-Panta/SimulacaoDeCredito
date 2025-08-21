@@ -20,7 +20,6 @@ public partial class BaseSimulacaoDbContext : DbContext
 
     public virtual DbSet<SimulacaoTabelaModel> SimulacaoTabelas { get; set; }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<SimulacaoModel>(entity =>
@@ -29,16 +28,19 @@ public partial class BaseSimulacaoDbContext : DbContext
 
             entity.ToTable("Simulacao");
 
-            entity.Property(e => e.IdSimulacao)
-                .HasColumnName("idSimulacao");
+            entity.Property(e => e.IdSimulacao).HasColumnName("idSimulacao");
             entity.Property(e => e.CodigoProduto).HasColumnName("codigoProduto");
             entity.Property(e => e.DataCriacao).HasColumnName("dataCriacao");
             entity.Property(e => e.DescricaoProduto)
                 .HasMaxLength(255)
                 .HasColumnName("descricaoProduto");
+            entity.Property(e => e.Prazo).HasColumnName("prazo");
             entity.Property(e => e.TaxaJuros)
                 .HasColumnType("decimal(18, 4)")
                 .HasColumnName("taxaJuros");
+            entity.Property(e => e.ValorDesejado)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("valorDesejado");
         });
 
         modelBuilder.Entity<SimulacaoParcelaModel>(entity =>
@@ -79,6 +81,8 @@ public partial class BaseSimulacaoDbContext : DbContext
 
             entity.Property(e => e.IdSimulacaoTabela).HasColumnName("idSimulacaoTabela");
             entity.Property(e => e.IdSimulacao).HasColumnName("idSimulacao");
+            entity.Property(e => e.ValorTotalParcelas).HasColumnName("valorTotalParcelas")
+                .HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Tipo)
                 .HasMaxLength(50)
                 .HasColumnName("tipo");

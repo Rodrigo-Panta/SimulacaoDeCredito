@@ -1,5 +1,4 @@
 using SimulacaoDeCredito.Domain.Entities;
-using SimulacaoDeCredito.Domain.Repositories;
 using SimulacaoDeCredito.Domain.Strategies;
 
 namespace SimulacaoDeCredito.Domain.Factories
@@ -14,9 +13,11 @@ namespace SimulacaoDeCredito.Domain.Factories
 
             Simulacao simulacao = new Simulacao()
             {
+                IdSimulacao = null,
                 CodigoProduto = produto.CoProduto,
                 DescricaoProduto = produto.NoProduto,
-                IdSimulacao = null,
+                Prazo = prazo,
+                ValorDesejado = valor,
                 TaxaJuros = produto.PcTaxaJuros,
                 ResultadoSimulacao = simulacaoTabelas,
                 DataCriacao = DateTime.Now

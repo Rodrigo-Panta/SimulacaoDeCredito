@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SimulacaoDeCredito.Application.Commands;
+using SimulacaoDeCredito.Application.Commands.CreateSimulacao;
+using SimulacaoDeCredito.Application.Queries.GetSimulacoesPaginadas;
+using SimulacaoDeCredito.Application.Queries.GetSimulacoesResumoDiario;
 
 namespace SimulacaoDeCredito.Controllers;
 
@@ -27,5 +29,19 @@ public class SimulacaoController : ControllerBase
         return Created("", result);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetSimulacoes([FromQuery] GetSimulacoesQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("resumo-diario")]
+    public async Task<IActionResult> GetSimulacoesPorDia([FromQuery] GetSimulacoesResumoDiarioQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
 
 }
+

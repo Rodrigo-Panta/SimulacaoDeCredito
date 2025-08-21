@@ -1,4 +1,4 @@
-namespace SimulacaoDeCredito.Application.DTOs.Response
+namespace SimulacaoDeCredito.Application.Commands.CreateSimulacao
 {
     public class CreateSimulacaoResponseDto
     {
