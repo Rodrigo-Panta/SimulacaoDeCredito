@@ -6,6 +6,9 @@ using SimulacaoDeCredito.Infra.Repositories;
 using SimulacaoDeCredito.Infrastructure.BaseProduto.Persistence;
 using SimulacaoDeCredito.Infra.EventPublishers;
 using SimulacaoDeCredito.src.Infra.BaseSimulacao.Persistence;
+using System.Diagnostics.Metrics;
+using System.Diagnostics;
+using SimulacaoDeCredito.Infra.Telemetria;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +44,8 @@ builder.Services.AddSingleton<IEventPublisher>(sp =>
     )
 );
 
+builder.Services.AddSingleton<ITelemetriaService, InMemoryTelemetriaService>();
+
 
 var app = builder.Build();
 
@@ -50,6 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<TelemetriaMiddleware>();
 
 app.UseHttpsRedirection();
 
