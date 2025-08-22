@@ -37,7 +37,11 @@ builder.Services.AddScoped<ISimulacaoRepository, SimulacaoRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // EventHub
-var connectionString = "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=MinhaSharedAccessKey;UseDevelopmentEmulator=true;EntityPath=simulacao";
+var connectionString = Environment.GetEnvironmentVariable("EVENT_HUB_CONNECTION_STRING");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("A variável de ambiente 'EVENT_HUB_CONNECTION_STRING' não está definida.");
+}
 builder.Services.AddSingleton<IEventPublisher>(sp =>
     new EventHubPublisher(
         connectionString

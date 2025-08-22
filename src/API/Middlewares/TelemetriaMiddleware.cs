@@ -22,7 +22,7 @@ public class TelemetriaMiddleware
         finally
         {
             sw.Stop();
-            var endpoint = context.GetEndpoint()?.DisplayName ?? "desconhecido";
+            var endpoint = context.Request.Path.Value?.Split("/").LastOrDefault() ?? "desconhecido";
             await telemetria.RegistrarRequisicao(endpoint, (long)sw.Elapsed.TotalMilliseconds, sucesso);
         }
     }
