@@ -1,6 +1,7 @@
 using AutoMapper;
 using MediatR;
 using SimulacaoDeCredito.Domain.EventPublishers;
+using SimulacaoDeCredito.Domain.Exceptions;
 using SimulacaoDeCredito.Domain.Factories;
 using SimulacaoDeCredito.Domain.Repositories;
 
@@ -25,17 +26,7 @@ public class CreateSimulacaoHandler : IRequestHandler<CreateSimulacaoCommand, Cr
         var valor = request.ValorDesejado;
         var prazo = request.Prazo;
 
-        if (prazo <= 0)
-            throw new Exception("Prazo deve ser maior que 0");
-        if (valor <= 0)
-            throw new Exception("Valor deve ser maior que 0");
-
-        var produto = await _produtoRepository.ObterProdutoEnquadrado(valor, prazo);
-
-        if (produto == null)
-        {
-            throw new Exception("Não foi encontrado um produto que se encaixa nos parâmetros");
-        }
+        var produto = await _produtoRepository.ObterProdutoPorPrazo(prazo);
 
         var simulacao = SimulacaoFactory.Criar(prazo, valor, produto);
         var simulacaoId = await _simulacaoRepository.CriarSimulacao(simulacao);

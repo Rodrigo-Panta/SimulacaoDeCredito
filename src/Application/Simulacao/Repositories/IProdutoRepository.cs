@@ -4,6 +4,6 @@ namespace SimulacaoDeCredito.Domain.Repositories
 {
     public interface IProdutoRepository
     {
-        public Task<Produto?> ObterProdutoEnquadrado(decimal valorDesejado, int prazo);
+        public Task<Produto?> ObterProdutoPorPrazo(int prazo);
     }
 }

@@ -15,11 +15,11 @@ namespace SimulacaoDeCredito.Infra.Repositories
             _context = context;
         }
 
-        public async Task<Produto?> ObterProdutoEnquadrado(decimal valorDesejado, int prazo)
+        public async Task<Produto?> ObterProdutoPorPrazo(int prazo)
         {
 
             var resultado = await _context.Produtos
-                    .Where(p => p.VrMinimo <= valorDesejado && (p.VrMaximo >= valorDesejado || p.VrMaximo == null) && p.NuMinimoMeses <= prazo && (p.NuMaximoMeses >= prazo || p.NuMaximoMeses == null))
+                    .Where(p => p.NuMinimoMeses <= prazo && (p.NuMaximoMeses >= prazo || p.NuMaximoMeses == null))
                     .FirstOrDefaultAsync();
             return resultado;
         }

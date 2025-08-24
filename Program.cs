@@ -12,14 +12,18 @@ using SimulacaoDeCredito.Application.Telemetria;
 using SimulacaoDeCredito.Infra.Telemetria.InMemory;
 using SimulacaoDeCredito.Infra.Telemetria.MongoDb;
 using Microsoft.Extensions.Options;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using SimulacaoDeCredito.Application.Commands.CreateSimulacao;
+using Microsoft.AspNetCore.Mvc;
+using SimulacaoDeCredito.API.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
@@ -51,7 +55,7 @@ builder.Services.AddSingleton<IEventPublisher>(sp =>
     )
 );
 
-
+// MongoDB para Telemetria
 builder.Services.Configure<MongoSettings>(
     builder.Configuration.GetSection("MongoSettings"));
 
@@ -63,16 +67,30 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 
 builder.Services.AddScoped<ITelemetriaService, MongoDBTelemetriaService>();
 
+// FluentValidation
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+builder.Services.AddScoped<IValidator<CreateSimulacaoCommand>, CreateSimulacaoValidator>();
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(x => x.Value!.Errors.Count > 0)
+            .SelectMany(x => x.Value!.Errors.Select(e => e.ErrorMessage)).ToList();
+
+        return new BadRequestObjectResult(new { erro = errors });
+    };
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 app.UseMiddleware<TelemetriaMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
@@ -82,17 +100,3 @@ app.MapControllers();
 
 app.Run();
 
-// string consumerGroup = EventHubConsumerClient.DefaultConsumerGroupName;
-
-// await using var consumer = new EventHubConsumerClient(consumerGroup, connectionString);
-
-// Console.WriteLine("Lendo eventos do Event Hub...");
-
-// using CancellationTokenSource cancellationSource = new CancellationTokenSource();
-// cancellationSource.CancelAfter(TimeSpan.FromSeconds(30)); // lê por 30 segundos
-
-// await foreach (PartitionEvent partitionEvent in consumer.ReadEventsAsync(cancellationSource.Token))
-// {
-//     string data = Encoding.UTF8.GetString(partitionEvent.Data.Body.ToArray());
-//     Console.WriteLine($"Evento recebido: {data}");
-// }
