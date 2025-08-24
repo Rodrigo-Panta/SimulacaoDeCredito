@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SimulacaoDeCredito.Application.Telemetria;
 using SimulacaoDeCredito.Infra.Telemetria;
 
 namespace SimulacaoDeCredito.Controllers;
@@ -9,9 +10,9 @@ public class TelemetriaController : ControllerBase
 {
 
     private readonly ILogger<TelemetriaController> _logger;
-    private readonly ITelemetriaRepository _TelemetriaService;
+    private readonly ITelemetriaService _TelemetriaService;
 
-    public TelemetriaController(ILogger<TelemetriaController> logger, ITelemetriaRepository TelemetriaService)
+    public TelemetriaController(ILogger<TelemetriaController> logger, ITelemetriaService TelemetriaService)
     {
         _TelemetriaService = TelemetriaService;
         _logger = logger;

@@ -1,14 +1,14 @@
 using System.Collections.Concurrent;
 
-namespace SimulacaoDeCredito.Infra.Telemetria;
+namespace SimulacaoDeCredito.Infra.Telemetria.InMemory;
 
 public class TelemetriaStats
 {
-    public ConcurrentDictionary<string, EndpointStats> EndpointStats { get; private set; }
+    public ConcurrentDictionary<string, EndpointStats> Endpoints { get; private set; }
 
     public TelemetriaStats()
     {
-        EndpointStats = new ConcurrentDictionary<string, EndpointStats>();
+        Endpoints = new ConcurrentDictionary<string, EndpointStats>();
     }
 }
 

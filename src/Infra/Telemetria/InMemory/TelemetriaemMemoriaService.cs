@@ -1,8 +1,9 @@
 using System.Collections.Concurrent;
+using SimulacaoDeCredito.Application.Telemetria;
 
-namespace SimulacaoDeCredito.Infra.Telemetria;
+namespace SimulacaoDeCredito.Infra.Telemetria.InMemory;
 
-public class InMemoryTelemetriaService : ITelemetriaRepository
+public class InMemoryTelemetriaService : ITelemetriaService
 {
     private readonly ConcurrentDictionary<DateTime, TelemetriaStats> _stats = new();
 
@@ -11,14 +12,14 @@ public class InMemoryTelemetriaService : ITelemetriaRepository
         var data = DateTime.Now.Date;
         var stats = _stats.TryGetValue(data, out var existingStats) ? existingStats : new TelemetriaStats();
 
-        var endpointStats = stats.EndpointStats.TryGetValue(endpoint, out var existingEp) ? existingEp : new EndpointStats();
+        var endpointStats = stats.Endpoints.TryGetValue(endpoint, out var existingEp) ? existingEp : new EndpointStats();
         endpointStats.TotalRequisicoes++;
         endpointStats.TempoTotalMs += (long)duracaoMs;
         endpointStats.Sucesso += sucesso ? 1 : 0;
         endpointStats.SomaDuracao += duracaoMs;
         endpointStats.MinDuracao = Math.Min(endpointStats.MinDuracao, duracaoMs);
         endpointStats.MaxDuracao = Math.Max(endpointStats.MaxDuracao, duracaoMs);
-        stats.EndpointStats[endpoint] = endpointStats;
+        stats.Endpoints[endpoint] = endpointStats;
         _stats[data] = stats;
 
         return Task.CompletedTask;
@@ -36,7 +37,7 @@ public class InMemoryTelemetriaService : ITelemetriaRepository
         return Task.FromResult(datas.Select(data => new TelemetriaResumoDto
         {
             Data = DateOnly.FromDateTime(data),
-            Endpoints = _stats[data].EndpointStats.Select(s => new EndpointResumoDto
+            Endpoints = _stats[data].Endpoints.Select(s => new EndpointResumoDto
             {
                 Endpoint = s.Key,
                 TempoMedioMs = (long)(s.Value.TempoTotalMs / (decimal)s.Value.TotalRequisicoes),

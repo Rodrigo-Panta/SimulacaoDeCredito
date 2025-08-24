@@ -6,9 +6,12 @@ using SimulacaoDeCredito.Infra.Repositories;
 using SimulacaoDeCredito.Infrastructure.BaseProduto.Persistence;
 using SimulacaoDeCredito.Infra.EventPublishers;
 using SimulacaoDeCredito.src.Infra.BaseSimulacao.Persistence;
-using System.Diagnostics.Metrics;
-using System.Diagnostics;
 using SimulacaoDeCredito.Infra.Telemetria;
+using MongoDB.Driver;
+using SimulacaoDeCredito.Application.Telemetria;
+using SimulacaoDeCredito.Infra.Telemetria.InMemory;
+using SimulacaoDeCredito.Infra.Telemetria.MongoDb;
+using Microsoft.Extensions.Options;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,7 +51,17 @@ builder.Services.AddSingleton<IEventPublisher>(sp =>
     )
 );
 
-builder.Services.AddSingleton<ITelemetriaService, InMemoryTelemetriaService>();
+
+builder.Services.Configure<MongoSettings>(
+    builder.Configuration.GetSection("MongoSettings"));
+
+builder.Services.AddSingleton<IMongoClient>(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<MongoSettings>>().Value;
+    return new MongoClient(settings.ConnectionString);
+});
+
+builder.Services.AddScoped<ITelemetriaService, MongoDBTelemetriaService>();
 
 
 var app = builder.Build();

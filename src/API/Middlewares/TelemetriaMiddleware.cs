@@ -1,4 +1,4 @@
-using SimulacaoDeCredito.Infra.Telemetria;
+using SimulacaoDeCredito.Application.Telemetria;
 
 public class TelemetriaMiddleware
 {
@@ -9,7 +9,7 @@ public class TelemetriaMiddleware
         _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, ITelemetriaRepository telemetria)
+    public async Task InvokeAsync(HttpContext context, ITelemetriaService telemetria)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
         bool sucesso = false;
@@ -22,7 +22,9 @@ public class TelemetriaMiddleware
         finally
         {
             sw.Stop();
-            var endpoint = context.Request.Path.Value?.Split("/").LastOrDefault() ?? "desconhecido";
+            var endpoint = context.Request.Path.Value?.Split("/").Last();
+            if (string.IsNullOrEmpty(endpoint))
+                endpoint = "index";
             await telemetria.RegistrarRequisicao(endpoint, (long)sw.Elapsed.TotalMilliseconds, sucesso);
         }
     }

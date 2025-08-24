@@ -1,4 +1,4 @@
-namespace SimulacaoDeCredito.Infra.Telemetria;
+namespace SimulacaoDeCredito.Application.Telemetria;
 
 public class TelemetriaResumoDto
 {
