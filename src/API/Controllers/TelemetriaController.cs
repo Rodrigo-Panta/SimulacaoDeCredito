@@ -9,9 +9,9 @@ public class TelemetriaController : ControllerBase
 {
 
     private readonly ILogger<TelemetriaController> _logger;
-    private readonly ITelemetriaService _TelemetriaService;
+    private readonly ITelemetriaRepository _TelemetriaService;
 
-    public TelemetriaController(ILogger<TelemetriaController> logger, ITelemetriaService TelemetriaService)
+    public TelemetriaController(ILogger<TelemetriaController> logger, ITelemetriaRepository TelemetriaService)
     {
         _TelemetriaService = TelemetriaService;
         _logger = logger;

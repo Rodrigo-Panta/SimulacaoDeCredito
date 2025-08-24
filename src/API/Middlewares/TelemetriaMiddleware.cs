@@ -9,7 +9,7 @@ public class TelemetriaMiddleware
         _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, ITelemetriaService telemetria)
+    public async Task InvokeAsync(HttpContext context, ITelemetriaRepository telemetria)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
         bool sucesso = false;

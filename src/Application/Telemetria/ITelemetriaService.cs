@@ -1,6 +1,6 @@
 namespace SimulacaoDeCredito.Infra.Telemetria;
 
-public interface ITelemetriaService
+public interface ITelemetriaRepository
 {
     public Task RegistrarRequisicao(string endpoint, long duracaoMs, bool sucesso);
 

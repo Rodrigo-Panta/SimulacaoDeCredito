@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 
 namespace SimulacaoDeCredito.Infra.Telemetria;
 
-public class InMemoryTelemetriaService : ITelemetriaService
+public class InMemoryTelemetriaService : ITelemetriaRepository
 {
     private readonly ConcurrentDictionary<DateTime, TelemetriaStats> _stats = new();
 
